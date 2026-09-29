@@ -11,7 +11,7 @@ courier box travels the six purchasing stages, and at the quotation section the 
 and seals.
 
 **Status:** development prototype, published on GitHub Pages (static files from `main`, repository
-root; no custom domain). `noindex, nofollow` is kept, so search engines are asked not to index it. By client
+root; no custom domain). Search engines may index it (no `noindex`; canonical URL set). By client
 decision the page shows no visible prototype notice or "concept image" labels. The quotation form
 never sends or stores anything; after a valid submit it says plainly that the request was not sent.
 
@@ -92,4 +92,3 @@ removed locally (OpenCV) in these copies only — approved by the client from
 - A confirmed destination for quotation requests (then `QUOTE.mode = 'live'` in `quote-form.js`).
 - Confirm category wording against slide 3 (الورقيات / الورق ومستلزماته, مستلزمات الضيافة والبوفيه / مستلزمات البوفيه والضيافة, معدات / مهمات الصحة والسلامة, الأدوات والماكينات الخفيفة / العدد والآلات الخفيفة).
 - Confirm the meaning of «إجراءات وسياسات مُتعددة» (reason ٠٨, verbatim from slide 5).
-- Remove `noindex` at launch.

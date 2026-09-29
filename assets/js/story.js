@@ -198,7 +198,8 @@
     // Without motion the courier box simply waits at the end of the track.
     resets.push(function () { place(1); });
     cycle.classList.add('has-js');
-    place(on() ? progress() : 1);
+    // First placement in the next frame (measuring now would force layout during page load).
+    window.requestAnimationFrame(function () { place(on() ? progress() : 1); });
     window.addEventListener('resize', function () { place(on() ? progress() : 1); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { place(on() ? progress() : 1); });
   })();

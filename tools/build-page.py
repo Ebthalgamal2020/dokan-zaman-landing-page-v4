@@ -107,7 +107,8 @@ def box(label=True, items=False):
             ih = 438 if h == 832 else 480
             parts.append(
                 f'<figure class="bx-item bx-item--{i % 3}{" bx-item--tall" if h == 912 else ""}" data-item="{i}">'
-                f'<img src="{IMG}{file}-640.webp" alt="" width="640" height="{ih}" decoding="async">'
+                f'<img src="{IMG}{file}-320.webp" srcset="{IMG}{file}-320.webp 320w, {IMG}{file}-640.webp 640w" '
+                f'sizes="(min-width: 1024px) 240px, 110px" alt="" width="640" height="{ih}" decoding="async" fetchpriority="low">'
                 f'<figcaption><span>{ar(num)}</span> {plain(name)}</figcaption></figure>')
         parts.append('</div>')
     parts.append('</div>')
@@ -119,7 +120,7 @@ def stage_figures():
     out = []
     for i, (num, key, file, name, _items, alt, h) in enumerate(CATEGORIES):
         active = " is-active" if i == 0 else ""
-        loading = 'loading="eager"' if i == 0 else 'loading="lazy"'
+        loading = 'loading="lazy"'
         tall = " panel3d__fig--tall" if h == 912 else ""
         out.append(
             f'<figure class="panel3d__fig{tall}{active}" data-for="{num}">'

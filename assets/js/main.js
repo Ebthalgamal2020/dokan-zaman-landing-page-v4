@@ -39,7 +39,9 @@
     window.addEventListener('scroll', function () {
       if (!headerTicking) { headerTicking = true; window.requestAnimationFrame(updateHeader); }
     }, { passive: true });
-    updateHeader();
+    // First check in the next frame: reading scrollY while the page is still being laid out
+    // would force the whole first layout synchronously inside this script.
+    window.requestAnimationFrame(updateHeader);
   }
 
   /* Mobile navigation sheet: the rest of the page is inert while it is open. */
