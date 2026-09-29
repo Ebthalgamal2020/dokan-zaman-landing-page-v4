@@ -313,6 +313,9 @@
     --box-shade: color-mix(in srgb, var(--navy) 78%, black);
     --box-deep: color-mix(in srgb, var(--navy) 62%, black);
     --box-inner: color-mix(in srgb, var(--navy) 72%, black);
+    --box-flap-in: color-mix(in srgb, var(--navy) 84%, black);
+    --box-tape: var(--orange);
+    --box-tape-shade: color-mix(in srgb, var(--orange) 86%, black);
     position: absolute;
     left: 50%;
     top: 58%;
@@ -365,15 +368,15 @@
     transform: rotateX(-118deg);
   }
   .bx-flap > .bx__out { background: var(--box-lit); }
-  .bx-flap > .bx__in { background: color-mix(in srgb, var(--navy) 84%, black); }
+  .bx-flap > .bx__in { background: var(--box-flap-in); }
 
-  /* Orange tape: across the seam of the long flaps, down the two short walls. */
+  /* Tape (orange by default): across the seam of the long flaps, down the two short walls. */
   .bx-tape-h {
     position: absolute;
     inset-inline: 0;
     top: 0;
     height: calc(var(--tape) / 2);
-    background: var(--orange);
+    background: var(--box-tape);
     transform-origin: 50% 0;
   }
   .bx-tape-v {
@@ -383,10 +386,10 @@
     width: var(--tape);
     height: 38%;
     margin-left: calc(var(--tape) / -2);
-    background: color-mix(in srgb, var(--orange) 86%, black);
+    background: var(--box-tape-shade);
     transform-origin: 50% 0;
   }
-  .bx--left .bx-tape-v { background: var(--orange); }
+  .bx--left .bx-tape-v { background: var(--box-tape); }
   .bx-cut {
     position: absolute;
     inset-inline: 0;
@@ -1030,6 +1033,18 @@
   .quote__intro .body-lg { margin-top: 0.9rem; }
   .seal { position: relative; height: 210px; margin-block: 1rem 0.5rem; }
   .box3d--seal { --w: 170px; top: 52%; }
+  /* Closing box only: orange body (#F37221 front, lit/shaded orange sides) and navy tape.
+     The hero and courier boxes keep the default navy body and orange tape. */
+  .box3d--seal {
+    --box-navy: var(--orange);
+    --box-lit: color-mix(in srgb, var(--orange) 90%, white);
+    --box-shade: color-mix(in srgb, var(--orange) 82%, black);
+    --box-deep: color-mix(in srgb, var(--orange) 60%, black);
+    --box-inner: color-mix(in srgb, var(--orange) 70%, black);
+    --box-flap-in: color-mix(in srgb, var(--orange) 80%, black);
+    --box-tape: var(--navy);
+    --box-tape-shade: color-mix(in srgb, var(--navy) 80%, black);
+  }
   .box3d--seal .box3d__shadow { background: rgb(0 0 0 / 0.35); }
   .journey { display: grid; gap: 0.55rem; margin-block: 1rem 1.25rem; }
   .journey li { @apply font-display; display: flex; gap: 0.75rem; align-items: baseline; font-size: 18px; font-weight: 600; }
