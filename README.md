@@ -2,13 +2,16 @@
 
 دكان زمان للتوريدات العمومية — «شريككم الموثوق في التوريدات والتشغيل»
 
+**Live Website:** [Visit Dokan Zaman](https://ebthalgamal2020.github.io/dokan-zaman-landing-page-v4/)
+
 A one-page Arabic (RTL) website built around a **scroll-driven supply box**: the navy box with
 orange tape sits closed in the hero, the tape splits and the flaps open as the visitor scrolls,
 the nine supply categories rise out in three waves and become the category gallery, a small
 courier box travels the six purchasing stages, and at the quotation section the box closes
 and seals.
 
-**Status:** development prototype. Not published, not deployed, `noindex, nofollow`. By client
+**Status:** development prototype, published on GitHub Pages (static files from `main`, repository
+root; no custom domain). `noindex, nofollow` is kept, so search engines are asked not to index it. By client
 decision the page shows no visible prototype notice or "concept image" labels. The quotation form
 never sends or stores anything; after a valid submit it says plainly that the request was not sent.
 
@@ -44,7 +47,7 @@ npm run build                   # site.min.css + main.min.js
 | `assets/js/quote-form.js` | Prototype form: validation, category/service preselection, honest "not sent" message. |
 | `assets/images/logo/` | Official logo (unchanged file) and V1's generated animated-logo markup (unchanged artwork). |
 | `assets/images/categories/` | Category images 01–09 (+ `-640` versions). |
-| `docs/review-07-09-before-after.png` | Before/after sheet of the 07–09 logo removal. |
+| `docs/review-07-09-before-after.png` | Before/after sheet of the 07–09 logo removal (kept locally; not in the repository). |
 
 ## The box
 
@@ -79,7 +82,7 @@ All nine category images are **AI concept images, not photographs of Dokan Zaman
 (no longer labelled on the page, by client decision — replace them before launch). 01–06 are copies of the V1/V3 set. 07–09 are copies of V1's
 `ai-temp` images with the inaccurate AI-generated Dokan marks, brand swooshes and garbled text
 removed locally (OpenCV) in these copies only — approved by the client from
-`docs/review-07-09-before-after.png`. 07–09 are 4:3 and are shown in the same 1216 × 832 frame as
+`docs/review-07-09-before-after.png` (kept locally). 07–09 are 4:3 and are shown in the same 1216 × 832 frame as
 01–06 by trimming only empty background (`object-position: 50% 72%`); no product is cropped.
 
 ## Pending before launch
