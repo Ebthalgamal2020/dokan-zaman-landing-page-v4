@@ -1,0 +1,34 @@
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local-only
+*.log
+.env
+.env.*
+*.wpress
+*.zip
+*.tmp
+*.bak
+
+# Secrets / credentials (never commit)
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+secrets*.json
+
+# Python tooling caches
+__pycache__/
+*.pyc
+
+# Design-review screenshots (kept on the local machine only, not part of the website).
+docs/refinement/
+docs/notice-removal/
+docs/review-07-09-before-after.png

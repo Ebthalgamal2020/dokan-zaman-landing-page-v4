@@ -1,0 +1,16 @@
+{
+  "name": "dokan-zaman-landing-page-v4",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dokan Zaman General Supplies — V4 Arabic RTL landing page built around a scroll-driven supply box. Tailwind is compiled ahead of time; the published page is plain HTML/CSS/JS with no runtime dependencies.",
+  "scripts": {
+    "build:css": "tailwindcss -i assets/css/style.css -o assets/css/site.min.css --minify",
+    "build:js": "terser assets/js/main.js assets/js/story.js assets/js/quote-form.js -c -m --comments false -o assets/js/main.min.js",
+    "build": "npm run build:css && npm run build:js",
+    "watch:css": "tailwindcss -i assets/css/style.css -o assets/css/site.min.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17",
+    "terser": "^5.50.0"
+  }
+}
