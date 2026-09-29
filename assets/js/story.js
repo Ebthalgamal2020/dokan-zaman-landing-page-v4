@@ -1,14 +1,14 @@
 /*
  * Dokan Zaman V4 — the supply box.
  *
- * Everything here READS the scroll position and poses the box to match; nothing ever
- * moves, snaps, smooths or blocks the page scroll. One requestAnimationFrame per scroll
- * event at most, and each part only works while it is on screen.
+ * Nothing here ever moves, snaps, smooths or blocks the page scroll. A and B READ the
+ * scroll position and pose the box to match (one requestAnimationFrame per scroll event at
+ * most, only while on screen); C is a short timed sequence that scrolling merely starts.
  *
  *  A. Story box (hero → categories): tape splits, flaps open one by one, the nine
  *     categories rise out in three waves and fan out beside their chapter text.
  *  B. Courier box (procurement): travels the six-stage track.
- *  C. Seal box (quote): flaps close and the tape seals as the section arrives.
+ *  C. Seal box (quote): plays once, 3.6 s — flaps close, then the tape seals.
  *
  * Motion runs only under html.motion (set in <head>: no reduced-motion preference and a
  * screen at least 520px tall). Otherwise the CSS static poses apply: the story box open
@@ -203,38 +203,69 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { place(on() ? progress() : 1); });
   })();
 
-  /* ------------------------------------------------------------ C. Seal box at the quote */
+  /* ------------------------------------------------------------ C. Seal box at the quote
+   * A timed sequence, not scroll-scrubbed, so it looks the same on every screen size and at
+   * any scroll speed. It starts once, when the box is 60% on screen, and plays for 3.6 s:
+   * the two short flaps fold in, a pause, the two long flaps close, a pause, then the orange
+   * tape runs across the seam and down the sides. It never restarts or reverses; scrolling
+   * only starts it and is never blocked. Timeline (share of SEAL_MS):
+   *   left 0–.22 · right .06–.28 · back .34–.54 · front .50–.70 · tape .76–.98 */
   (function () {
     var section = document.querySelector('[data-quote-section]');
     if (!section) return;
+    var holder = section.querySelector('.seal');
     var body = section.querySelector('[data-box-body]');
-    if (!body) return;
+    if (!body || !holder) return;
+    var SEAL_MS = 3600;
     var flaps = {};
     body.querySelectorAll('[data-flap]').forEach(function (f) { flaps[f.getAttribute('data-flap')] = f; });
     var tapesH = body.querySelectorAll('.bx-tape-h');
     var tapesV = body.querySelectorAll('.bx-tape-v');
-    var visible = { v: true };
-    watch(section, visible);
+    var state = 'idle'; // idle → playing → sealed
+    var started = 0;
 
-    var render = function () {
-      if (!visible.v) return;
-      var r = section.getBoundingClientRect();
-      var vh = window.innerHeight;
-      var p = clamp((vh * 0.95 - r.top) / (vh * 0.8), 0, 1);
+    var pose = function (p) {
       var close = function (a, b) { return lerp(OPEN, 90, ease(seg(p, a, b))); };
-      // The reverse of opening: short flaps first, then the long ones, then the tape.
-      flaps.left.style.transform = 'rotateX(' + close(0, 0.3).toFixed(2) + 'deg)';
-      flaps.right.style.transform = 'rotateX(' + close(0.08, 0.38).toFixed(2) + 'deg)';
-      flaps.back.style.transform = 'rotateX(' + close(0.3, 0.6).toFixed(2) + 'deg)';
-      flaps.front.style.transform = 'rotateX(' + close(0.42, 0.72).toFixed(2) + 'deg)';
-      var seal = ease(seg(p, 0.72, 0.95));
+      flaps.left.style.transform = 'rotateX(' + close(0, 0.22).toFixed(2) + 'deg)';
+      flaps.right.style.transform = 'rotateX(' + close(0.06, 0.28).toFixed(2) + 'deg)';
+      flaps.back.style.transform = 'rotateX(' + close(0.34, 0.54).toFixed(2) + 'deg)';
+      flaps.front.style.transform = 'rotateX(' + close(0.5, 0.7).toFixed(2) + 'deg)';
+      var seal = ease(seg(p, 0.76, 0.98));
       tapesH.forEach(function (t) { t.style.transform = 'scaleX(' + seal.toFixed(3) + ')'; });
       tapesV.forEach(function (t) { t.style.transform = 'scaleY(' + seal.toFixed(3) + ')'; });
       var e = ease(p);
       body.style.transform = 'rotateX(' + lerp(-32, -20, e).toFixed(2) + 'deg) rotateY(' + lerp(-14, -34, e).toFixed(2) + 'deg)';
     };
-    jobs.push(render);
+    var tick = function (now) {
+      if (state !== 'playing') return;
+      if (!started) started = now;
+      var p = Math.min(1, (now - started) / SEAL_MS);
+      pose(p);
+      if (p < 1) window.requestAnimationFrame(tick);
+      else { state = 'sealed'; holder.setAttribute('data-sealed', ''); }
+    };
+    var play = function () {
+      if (state !== 'idle' || !on()) return;
+      state = 'playing';
+      started = 0;
+      window.requestAnimationFrame(tick);
+    };
+
+    if (on()) pose(0); // arrives open (the CSS open pose, written explicitly)
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        play();
+        if (state !== 'idle') io.disconnect();
+      }, { threshold: 0.6 });
+      io.observe(holder);
+    } else {
+      state = 'sealed';
+      pose(1);
+    }
+    // Reduced motion / short screen: no sequence — the CSS closed, sealed pose shows at once.
     resets.push(function () {
+      state = 'sealed';
       body.style.transform = '';
       Object.keys(flaps).forEach(function (k) { flaps[k].style.transform = ''; });
       Array.prototype.forEach.call(tapesH, function (t) { t.style.transform = ''; });

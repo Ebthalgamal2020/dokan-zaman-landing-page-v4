@@ -474,7 +474,7 @@
 
   /* Scroll-driven mode starts closed; story.js takes over from here. */
   .motion .box3d--story .bx-flap { transform: rotateX(90deg); }
-  /* The seal box arrives open; story.js closes it and runs the tape as the quote section comes in. */
+  /* The seal box arrives open; once it is in view story.js closes it and runs the tape (3.6 s, once). */
   .motion .box3d--seal .bx-flap { transform: rotateX(-118deg); }
   .motion .box3d--seal .bx-tape-h { transform: scaleX(0); }
   .motion .box3d--seal .bx-tape-v { transform: scaleY(0); }
